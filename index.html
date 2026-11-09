@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>我的 RPG 世界</title>
+    <meta name="description" content="一个以像素 RPG 形式呈现的个人网站：探索小镇，在书架上阅读文章。" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="/site.css" />
+  </head>
+  <body class="game-page">
+    <header class="site-nav">
+      <a class="site-title" href="./">我的 RPG 世界</a>
+      <nav aria-label="网站导航">
+        <a href="library/">内容库</a>
+        <a href="pages/about/">关于</a>
+        <button type="button" id="btn-home" title="回到小镇起点">回到起点</button>
+        <button type="button" id="btn-reset" title="清除本地存档并回到起点">清除存档</button>
+      </nav>
+    </header>
+    <main id="stage">
+      <div id="game" tabindex="-1" aria-label="游戏画面：像素小镇"></div>
+      <div id="loading" role="status">
+        <p>世界加载中…</p>
+        <p class="loading-alt">不想等？<a href="library/">直接浏览内容 →</a></p>
+      </div>
+    </main>
+    <noscript>
+      <div class="noscript reader">
+        <p>游戏需要启用 JavaScript。你仍然可以 <a href="library/">直接浏览全部内容</a>。</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

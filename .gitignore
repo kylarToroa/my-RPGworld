@@ -147,3 +147,6 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# 浏览器测试截图（本地生成）
+tests/e2e/screenshots/
