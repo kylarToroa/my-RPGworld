@@ -1,0 +1,81 @@
+import { describe, expect, it } from 'vitest';
+import { join } from 'node:path';
+import { Grid } from '../src/game/grid';
+import { memoryStorage, resolvePlacement, resolveSaveScene, SAVE_KEY, SaveStore, type KeyValueStorage } from '../src/game/save';
+import { parseWorld } from '../src/data/world';
+import { readWorldFromDisk } from '../src/data/world-fs';
+
+const { raw, maps } = readWorldFromDisk(join(__dirname, '..'));
+const world = parseWorld(raw);
+
+describe('SaveStore', () => {
+  it('保存后可以读回', () => {
+    const s = new SaveStore(memoryStorage());
+    s.save({ scene: 'library', x: 3, y: 4, facing: 'left' });
+    expect(s.load()).toEqual({ scene: 'library', x: 3, y: 4, facing: 'left', version: 1 });
+  });
+
+  it('损坏或版本不认识的存档返回 null', () => {
+    const storage = memoryStorage();
+    const s = new SaveStore(storage);
+    storage.setItem(SAVE_KEY, '{不是 JSON');
+    expect(s.load()).toBeNull();
+    storage.setItem(SAVE_KEY, JSON.stringify({ version: 0, scene: 'town' }));
+    expect(s.load()).toBeNull();
+    storage.setItem(SAVE_KEY, JSON.stringify({ version: 99, scene: 'town', x: 1, y: 1, facing: 'up' }));
+    expect(s.load()).toBeNull();
+  });
+
+  it('存储抛异常时安全降级', () => {
+    const broken: KeyValueStorage = {
+      getItem: () => { throw new Error('denied'); },
+      setItem: () => { throw new Error('denied'); },
+      removeItem: () => { throw new Error('denied'); },
+    };
+    const s = new SaveStore(broken);
+    expect(() => s.save({ scene: 'town', x: 1, y: 1, facing: 'up' })).not.toThrow();
+    expect(s.load()).toBeNull();
+    expect(() => s.clear()).not.toThrow();
+  });
+});
+
+describe('存档恢复', () => {
+  it('场景已被删除时回到起始场景', () => {
+    const r = resolveSaveScene({ version: 1, scene: 'deleted-scene', x: 1, y: 1, facing: 'up' }, world);
+    expect(r.scene.id).toBe(world.config.startScene);
+    expect(r.requested).toBeNull();
+  });
+
+  it('没有存档时从起点开始', () => {
+    expect(resolveSaveScene(null, world).scene.id).toBe('town');
+  });
+
+  it('存档位置可站立时使用存档位置', () => {
+    const scene = world.scenes.get('town')!;
+    const p = resolvePlacement(maps.get('town')!, scene, { scene: 'town', x: 8, y: 13, facing: 'left' });
+    expect(p).toMatchObject({ x: 8, y: 13, facing: 'left' });
+  });
+
+  it('存档位置变成墙（地图被修改）时回到场景出生点', () => {
+    const scene = world.scenes.get('town')!;
+    const p = resolvePlacement(maps.get('town')!, scene, { scene: 'town', x: 0, y: 0, facing: 'left' });
+    expect(p).toMatchObject(scene.spawns[scene.defaultSpawn]!);
+  });
+
+  it('存档坐标超出地图范围时也能回到出生点', () => {
+    const scene = world.scenes.get('library')!;
+    const p = resolvePlacement(maps.get('library')!, scene, { scene: 'library', x: 999, y: -5, facing: 'up' });
+    expect(p).toMatchObject({ x: 6, y: 7 });
+  });
+
+  it('出生点本身被堵住时找最近的空地', () => {
+    const scene = world.scenes.get('library')!;
+    const grid = maps.get('library')!.withBlocked([{ x: 6, y: 7 }]);
+    const p = resolvePlacement(grid, scene, null);
+    expect(grid.isWalkable(p.x, p.y)).toBe(true);
+  });
+
+  it('Grid 越界视为障碍', () => {
+    expect(Grid.fromRows(['.']).isBlocked(-1, 0)).toBe(true);
+  });
+});

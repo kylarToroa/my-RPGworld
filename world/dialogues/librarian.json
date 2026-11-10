@@ -1,0 +1,20 @@
+{
+  "id": "librarian",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "图书管理员",
+      "text": ["欢迎来到图书馆！", "这里收藏着站长的研究笔记。想看点什么？"],
+      "choices": [
+        { "label": "查看研究笔记", "action": { "type": "openCollection", "title": "AI 研究书架", "category": "ai" } },
+        { "label": "这里是哪里？", "next": "about" },
+        { "label": "先随便看看" }
+      ]
+    },
+    "about": {
+      "speaker": "图书管理员",
+      "text": "这是站长的个人世界。左边的书架会自动收录新写的 AI 文章，以后还会有更多书架。",
+      "next": "greet"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "library",
+  "name": "图书馆",
+  "map": "library",
+  "defaultSpawn": "entrance",
+  "spawns": {
+    "entrance": { "x": 6, "y": 7, "facing": "up" }
+  }
+}

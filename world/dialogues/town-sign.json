@@ -1,0 +1,14 @@
+{
+  "id": "town-sign",
+  "start": "read",
+  "nodes": {
+    "read": {
+      "speaker": "告示牌",
+      "text": ["「欢迎来到小镇！」", "北边是图书馆。下面贴着一张站长的自我介绍。"],
+      "choices": [
+        { "label": "读自我介绍", "action": { "type": "openContent", "content": "about" } },
+        { "label": "离开" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "librarian",
+    "name": "图书管理员",
+    "scene": "library",
+    "x": 7,
+    "y": 3,
+    "sprite": "librarian",
+    "facing": "down",
+    "action": { "type": "dialogue", "dialogue": "librarian" }
+  },
+  {
+    "id": "ai-bookshelf",
+    "name": "AI 研究书架",
+    "scene": "library",
+    "x": 1,
+    "y": 1,
+    "width": 4,
+    "action": { "type": "openCollection", "title": "AI 研究书架", "category": "ai" }
+  },
+  {
+    "id": "spare-bookshelf",
+    "name": "空书架",
+    "scene": "library",
+    "x": 9,
+    "y": 1,
+    "width": 4,
+    "action": { "type": "dialogue", "dialogue": "spare-bookshelf" }
+  },
+  {
+    "id": "library-exit",
+    "name": "出口",
+    "scene": "library",
+    "x": 6,
+    "y": 8,
+    "width": 2,
+    "solid": false,
+    "trigger": "step",
+    "action": { "type": "changeScene", "scene": "town", "spawn": "library_door" }
+  }
+]
