@@ -1,4 +1,4 @@
-# 部署到 GitHub Pages。只在手动点击 “Run workflow” 时运行，不会自动部署。
+# 部署到 GitHub Pages。push 到 main 时自动部署，也可在 Actions 页面手动点击 “Run workflow” 运行。
 name: Deploy to GitHub Pages
 on:
   workflow_dispatch:
