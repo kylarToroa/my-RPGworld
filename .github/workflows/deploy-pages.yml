@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   workflow_dispatch:
   push:
-    branches: [main, feat/m0-m1-prototype-from-main]
+    branches: [main]
 permissions:
   contents: read
   pages: write
