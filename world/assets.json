@@ -1,0 +1,10 @@
+{
+  "tilesets": {
+    "placeholder": "assets/tilesets/placeholder.png"
+  },
+  "sprites": {
+    "player": { "url": "assets/sprites/player.png", "frameWidth": 16, "frameHeight": 16 },
+    "librarian": { "url": "assets/sprites/librarian.png", "frameWidth": 16, "frameHeight": 16 },
+    "villager": { "url": "assets/sprites/villager.png", "frameWidth": 16, "frameHeight": 16 }
+  }
+}

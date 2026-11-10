@@ -1,0 +1,30 @@
+[
+  {
+    "id": "library-door",
+    "name": "图书馆大门",
+    "scene": "town",
+    "x": 14,
+    "y": 5,
+    "solid": false,
+    "trigger": "step",
+    "action": { "type": "changeScene", "scene": "library", "spawn": "entrance" }
+  },
+  {
+    "id": "town-sign",
+    "name": "告示牌",
+    "scene": "town",
+    "x": 5,
+    "y": 8,
+    "action": { "type": "dialogue", "dialogue": "town-sign" }
+  },
+  {
+    "id": "villager",
+    "name": "村民小禾",
+    "scene": "town",
+    "x": 20,
+    "y": 13,
+    "sprite": "villager",
+    "facing": "left",
+    "action": { "type": "dialogue", "dialogue": "villager" }
+  }
+]

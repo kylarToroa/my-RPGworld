@@ -1,0 +1,128 @@
+/* 全站样式：游戏页与独立内容页共用 */
+:root {
+  --bg: #1d1b26;
+  --panel: #fffaf0;
+  --ink: #2b2420;
+  --muted: #7a6e64;
+  --accent: #a84a3c;
+  --border: #3b2a1e;
+  --nav-h: 48px;
+  font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: #f4eee2; color: var(--ink); line-height: 1.7; }
+a { color: var(--accent); }
+button { font: inherit; }
+[hidden] { display: none !important; }
+
+/* ---------- 导航 ---------- */
+.site-nav {
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 max(12px, env(safe-area-inset-left));
+  background: #2b2420; color: #f4eee2;
+}
+.site-title { color: #f4eee2; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.site-nav nav { display: flex; align-items: center; gap: 4px; overflow-x: auto; }
+.site-nav nav a, .site-nav nav button {
+  color: #f4eee2; text-decoration: none; background: none; border: 1px solid transparent;
+  border-radius: 6px; padding: 6px 10px; min-height: 36px; cursor: pointer; white-space: nowrap; font-size: 14px;
+}
+.site-nav nav a:hover, .site-nav nav button:hover { border-color: #f4eee288; }
+:focus-visible { outline: 3px solid #f0c040; outline-offset: 2px; }
+
+/* ---------- 游戏页 ---------- */
+.game-page { background: var(--bg); overflow: hidden; height: 100dvh; display: flex; flex-direction: column; }
+#stage { position: relative; flex: 1; min-height: 0; }
+#game { position: absolute; inset: 0; outline: none; touch-action: none; }
+#game canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+#loading {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #f4eee2; background: var(--bg); text-align: center; padding: 16px;
+}
+#loading a { color: #f0c040; }
+.loading-alt { font-size: 14px; opacity: 0.85; }
+
+.hint {
+  position: absolute; left: 50%; top: 8px; transform: translateX(-50%);
+  max-width: calc(100% - 16px); padding: 4px 12px; border-radius: 999px;
+  background: #000a; color: #fff; font-size: 13px; pointer-events: none; text-align: center;
+}
+
+.dialogue {
+  position: absolute; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  width: min(720px, calc(100% - 16px)); min-height: 110px;
+  background: var(--panel); border: 4px solid var(--border); border-radius: 8px; box-shadow: 0 4px 0 #0006;
+  padding: 12px 16px; cursor: pointer;
+}
+.dialogue .speaker {
+  position: absolute; top: -18px; left: 12px; background: var(--accent); color: #fff;
+  padding: 2px 10px; border-radius: 4px; font-size: 14px; font-weight: 700;
+}
+.dialogue .line { margin: 6px 0; font-size: 16px; }
+.dialogue .continue { position: absolute; right: 14px; bottom: 6px; animation: bob 0.8s infinite alternate; color: var(--accent); }
+@keyframes bob { to { transform: translateY(3px); } }
+.choices { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.choice {
+  text-align: left; padding: 10px 12px; min-height: 44px; border: 2px solid var(--border); border-radius: 6px;
+  background: #fff; cursor: pointer;
+}
+.choice:hover, .choice:focus { background: #ffe9b0; }
+
+.modal-backdrop {
+  position: absolute; inset: 0; background: #0008; display: flex; align-items: center; justify-content: center; padding: 12px;
+}
+.modal {
+  width: min(760px, 100%); max-height: 100%; display: flex; flex-direction: column;
+  background: var(--panel); border: 4px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.modal-header { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 16px; border-bottom: 2px solid #e4d8c2; }
+.modal-header h2 { flex: 1; margin: 0; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.modal-back, .modal-close {
+  border: 2px solid var(--border); background: #fff; border-radius: 6px; cursor: pointer; min-height: 40px; padding: 0 10px;
+}
+.modal-close { min-width: 44px; font-size: 22px; line-height: 1; }
+.modal-link { font-size: 14px; white-space: nowrap; }
+.modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 8px 20px 20px; outline: none; }
+.item-button {
+  font-size: 17px; font-weight: 700; color: var(--accent); background: none; border: none; padding: 4px 0;
+  cursor: pointer; text-align: left; text-decoration: underline; min-height: 36px;
+}
+.error-text { color: #b00020; }
+
+.toast {
+  position: absolute; left: 50%; top: 44px; transform: translate(-50%, -8px); opacity: 0; transition: 0.2s;
+  background: #2b2420; color: #fff; padding: 6px 14px; border-radius: 6px; pointer-events: none; font-size: 14px;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- 阅读排版（游戏弹窗与独立页面共用） ---------- */
+.page-main { padding: 24px 16px 48px; }
+.reader { max-width: 720px; margin: 0 auto; }
+.static-page .reader { background: var(--panel); border: 3px solid var(--border); border-radius: 8px; padding: 8px 24px 24px; }
+.reader h1 { line-height: 1.3; }
+.meta { color: var(--muted); font-size: 14px; }
+.prose img { max-width: 100%; height: auto; }
+.prose pre { background: #2b2420; color: #f4eee2; padding: 12px; border-radius: 6px; overflow-x: auto; }
+.prose code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.92em; }
+.prose blockquote { margin: 0; padding: 4px 16px; border-left: 4px solid var(--accent); color: var(--muted); background: #0000000a; }
+.item-list { list-style: none; padding: 0; }
+.item-list li { padding: 10px 0; border-bottom: 1px dashed #d8c9ae; }
+.item-list li p { margin: 2px 0; }
+.page-actions { max-width: 720px; margin: 16px auto; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.noscript { padding: 24px; }
+
+@media (max-width: 520px) {
+  .site-title { font-size: 15px; }
+  .site-nav nav a, .site-nav nav button { padding: 6px 7px; font-size: 13px; }
+  .static-page .reader { padding: 4px 14px 16px; }
+  .hint { font-size: 12px; padding: 3px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal-backdrop { padding: 0; }
+  .modal { border-radius: 0; border-width: 0; height: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dialogue .continue { animation: none; }
+  .toast { transition: none; }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "town",
+  "name": "小镇",
+  "map": "town",
+  "defaultSpawn": "start",
+  "spawns": {
+    "start": { "x": 14, "y": 12, "facing": "down" },
+    "library_door": { "x": 14, "y": 6, "facing": "down" }
+  }
+}

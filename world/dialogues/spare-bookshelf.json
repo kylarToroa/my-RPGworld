@@ -1,0 +1,7 @@
+{
+  "id": "spare-bookshelf",
+  "start": "look",
+  "nodes": {
+    "look": { "text": "书架上还空空的，似乎在等待新的书。" }
+  }
+}
