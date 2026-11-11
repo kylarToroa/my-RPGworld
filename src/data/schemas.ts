@@ -154,7 +154,8 @@ export const ContentItemSchema = ContentMetaSchema.extend({ html: z.string() });
 export type ContentItem = z.infer<typeof ContentItemSchema>;
 
 // ---------- 本地存档 ----------
-export const SAVE_VERSION = 1;
+// v2：网格从 16px 改为 48px，坐标含义变了，旧存档直接作废（回落到出生点）
+export const SAVE_VERSION = 2;
 export const SaveSchema = z.object({
   version: z.number().int(),
   scene: z.string(),

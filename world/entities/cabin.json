@@ -1,0 +1,22 @@
+[
+  {
+    "id": "cabin-exit",
+    "name": "出口",
+    "scene": "cabin",
+    "x": 7,
+    "y": 10,
+    "width": 2,
+    "solid": false,
+    "trigger": "step",
+    "action": { "type": "changeScene", "scene": "forest", "spawn": "door" }
+  },
+  {
+    "id": "cabin-shelf",
+    "name": "书架",
+    "scene": "cabin",
+    "x": 2,
+    "y": 2,
+    "width": 3,
+    "action": { "type": "dialogue", "dialogue": "cabin-shelf" }
+  }
+]

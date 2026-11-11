@@ -1,10 +1,19 @@
 {
   "tilesets": {
-    "placeholder": "assets/tilesets/placeholder.png"
+    "outside_a4": "assets/tilesets/outside_a4.png",
+    "outside_a5": "assets/tilesets/outside_a5.png",
+    "outside_b": "assets/tilesets/outside_b.png",
+    "inside_a4": "assets/tilesets/inside_a4.png",
+    "inside_a5": "assets/tilesets/inside_a5.png",
+    "inside_b": "assets/tilesets/inside_b.png",
+    "inside_c": "assets/tilesets/inside_c.png",
+    "roof_wood_a3": "assets/tilesets/roof_wood_a3.png",
+    "ground_grass": "assets/tilesets/ground_grass.png"
   },
   "sprites": {
-    "player": { "url": "assets/sprites/player.png", "frameWidth": 16, "frameHeight": 16 },
-    "librarian": { "url": "assets/sprites/librarian.png", "frameWidth": 16, "frameHeight": 16 },
-    "villager": { "url": "assets/sprites/villager.png", "frameWidth": 16, "frameHeight": 16 }
+    "player": { "url": "assets/sprites/player.png", "frameWidth": 48, "frameHeight": 48 },
+    "librarian": { "url": "assets/sprites/librarian.png", "frameWidth": 48, "frameHeight": 48 },
+    "villager": { "url": "assets/sprites/villager.png", "frameWidth": 48, "frameHeight": 48 },
+    "big_tree": { "url": "assets/sprites/big_tree.png", "frameWidth": 96, "frameHeight": 96 }
   }
 }

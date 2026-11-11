@@ -64,6 +64,8 @@ export class WorldScene extends Phaser.Scene {
 
   create(data: { placement: Placement | null; scene: SceneConfig }): void {
     for (const key of Object.keys(this.svc.world.assets.sprites)) {
+      // 单帧道具图（整棵树、整栋屋）不注册行走动画：它没有 3×4 帧
+      if (this.textures.get(`sprite:${key}`).frameTotal < 13) continue;
       for (const [dir, row] of Object.entries(FACING_ROW)) {
         this.anims.create({
           key: `${key}:walk:${dir}`,
@@ -290,7 +292,9 @@ export class WorldScene extends Phaser.Scene {
 
   private interact(entity: Entity): void {
     const npc = this.npcSprites.get(entity.id);
-    if (npc) {
+    // 单帧道具图没有朝向帧，不做转身
+    const animated = npc !== undefined && npc.texture.frameTotal >= 13;
+    if (npc && animated) {
       // NPC 转身面向玩家
       const toPlayer = facingBetween({ x: entity.x, y: entity.y }, this.tile);
       npc.setFrame(FACING_ROW[toPlayer] * 3);
@@ -401,8 +405,9 @@ export class WorldScene extends Phaser.Scene {
   private updateZoom(): void {
     const { width, height } = this.scale.gameSize;
     // 屏幕短边约显示 12 格；手机等窄屏放大到约 8 格，方便手指点按
+    // 图块已是 48px，缩放保持整数倍（1~3），避免像素被拉花
     const short = Math.min(width, height);
-    const zoom = Phaser.Math.Clamp(Math.floor(short / (TILE_SIZE * (short < 600 ? 8 : 12))), 2, 5);
+    const zoom = Phaser.Math.Clamp(Math.floor(short / (TILE_SIZE * (short < 600 ? 8 : 12))), 1, 3);
     this.cameras.main.setZoom(zoom);
     this.updateCamera();
   }

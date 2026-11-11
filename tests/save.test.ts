@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { join } from 'node:path';
 import { Grid } from '../src/game/grid';
 import { memoryStorage, resolvePlacement, resolveSaveScene, SAVE_KEY, SaveStore, type KeyValueStorage } from '../src/game/save';
+import { SAVE_VERSION } from '../src/data/schemas';
 import { parseWorld } from '../src/data/world';
 import { readWorldFromDisk } from '../src/data/world-fs';
 
@@ -12,7 +13,7 @@ describe('SaveStore', () => {
   it('保存后可以读回', () => {
     const s = new SaveStore(memoryStorage());
     s.save({ scene: 'library', x: 3, y: 4, facing: 'left' });
-    expect(s.load()).toEqual({ scene: 'library', x: 3, y: 4, facing: 'left', version: 1 });
+    expect(s.load()).toEqual({ scene: 'library', x: 3, y: 4, facing: 'left', version: SAVE_VERSION });
   });
 
   it('损坏或版本不认识的存档返回 null', () => {
@@ -47,7 +48,15 @@ describe('存档恢复', () => {
   });
 
   it('没有存档时从起点开始', () => {
-    expect(resolveSaveScene(null, world).scene.id).toBe('town');
+    expect(resolveSaveScene(null, world).scene.id).toBe(world.config.startScene);
+  });
+
+  it('v1 旧存档（16px 坐标）被丢弃，回到起点', () => {
+    const storage = memoryStorage();
+    const s = new SaveStore(storage);
+    storage.setItem(SAVE_KEY, JSON.stringify({ version: 1, scene: 'town', x: 14, y: 12, facing: 'down' }));
+    expect(s.load()).toBeNull();
+    expect(resolveSaveScene(s.load(), world).scene.id).toBe(world.config.startScene);
   });
 
   it('存档位置可站立时使用存档位置', () => {

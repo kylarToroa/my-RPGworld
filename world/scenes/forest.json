@@ -1,0 +1,10 @@
+{
+  "id": "forest",
+  "name": "林间空地",
+  "map": "forest",
+  "defaultSpawn": "start",
+  "spawns": {
+    "start": { "x": 12, "y": 10, "facing": "up" },
+    "door": { "x": 12, "y": 6, "facing": "down" }
+  }
+}

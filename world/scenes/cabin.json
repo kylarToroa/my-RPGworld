@@ -1,0 +1,9 @@
+{
+  "id": "cabin",
+  "name": "木屋",
+  "map": "cabin",
+  "defaultSpawn": "entrance",
+  "spawns": {
+    "entrance": { "x": 7, "y": 9, "facing": "up" }
+  }
+}

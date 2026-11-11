@@ -1,8 +1,16 @@
 // 由 ASCII 草图生成标准 Tiled JSON 地图（world/maps/*.json）。
-// 生成后的地图可以直接用 Tiled 编辑器打开继续修改；之后不必再使用本脚本。
-// 用法：npm run gen:maps
+// ⚠️ 本脚本产出的是 16px 占位地图，已被 48px 的 build-m2-maps.mjs 取代；
+//    运行会覆盖正式地图，必须显式加 --force。
+// 用法：npm run gen:maps -- --force
 import { writeFileSync } from 'node:fs';
 import { TILE_NAMES } from './generate-placeholder-art.mjs';
+
+if (!process.argv.includes('--force')) {
+  console.error('✗ world/maps 下现在是 48px 正式地图（scripts/build-m2-maps.mjs 生成）。');
+  console.error('  重新生成占位地图请用：node scripts/build-m2-maps.mjs（不要用本脚本）');
+  console.error('  确实要覆盖为 16px 占位地图，请显式加参数：npm run gen:maps -- --force');
+  process.exit(1);
+}
 
 const gid = (name) => {
   const i = TILE_NAMES.indexOf(name);

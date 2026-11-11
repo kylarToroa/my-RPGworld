@@ -63,7 +63,7 @@ async function boot(): Promise<void> {
       parent: gameEl,
       pixelArt: true,
       roundPixels: true,
-      backgroundColor: '#1d1b26',
+      backgroundColor: '#141310',
       banner: false,
       input: { keyboard: false },
       scale: { mode: Phaser.Scale.RESIZE, width: '100%', height: '100%' },

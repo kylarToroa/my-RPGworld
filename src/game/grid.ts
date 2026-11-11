@@ -7,7 +7,8 @@ export interface Point {
   y: number;
 }
 
-export const TILE_SIZE = 16;
+/** 基础网格：48×48 像素一格（与美术素材的图块规格一致） */
+export const TILE_SIZE = 48;
 export const COLLISION_LAYER = 'collision';
 
 const TiledMapSchema = z.object({

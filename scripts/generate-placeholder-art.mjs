@@ -303,6 +303,12 @@ function write(path, img) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
+  // 正式美术已落地：这些文件会覆盖 public/assets 下的真实素材，必须显式确认才执行
+  if (!process.argv.includes('--force')) {
+    console.error('✗ public/assets 下现在是正式美术（RPG Maker 48px 素材），本脚本会用占位图覆盖它。');
+    console.error('  确实要重新生成占位美术，请显式加参数：npm run gen:art -- --force');
+    process.exit(1);
+  }
   write('public/assets/tilesets/placeholder.png', buildTileset());
   const base = { s: '#f2c9a0', e: '#1b1b1b', m: '#c46a5a', b: '#3b2a1e' };
   write('public/assets/sprites/player.png', buildCharacter({ ...base, h: '#3b2a1e', c: '#2e86c1', p: '#34495e' }));

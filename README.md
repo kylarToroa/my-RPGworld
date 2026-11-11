@@ -56,5 +56,12 @@ docs/             架构与维护文档
 
 ## 美术与版权
 
-当前全部美术为程序绘制的原创占位图（`scripts/generate-placeholder-art.mjs`），
-不使用任何商业游戏素材。
+当前美术为 RPG Maker 系列素材（48×48 图块 + 48×48 行走图），**仅在本机/私人使用**：
+这些素材的授权只覆盖 RPG Maker 引擎与非商业私人用途，不允许公开再分发。
+因此 `public/assets/tilesets/*.png` 与 `public/assets/sprites/*.png` 已被 `.gitignore` 排除，
+**不会进入仓库**。仓库只保存代码、地图与配置。
+
+换一台机器要看到画面，需要把素材手动放回这两个目录，文件名见 `world/assets.json`。
+详见 `public/assets/来源与授权.md`。
+
+原始素材库在 `D:\美术素材库\`（不在本仓库内）。

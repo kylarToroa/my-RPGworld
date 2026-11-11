@@ -46,9 +46,10 @@ button { font: inherit; }
 .loading-alt { font-size: 14px; opacity: 0.85; }
 
 .hint {
-  position: absolute; left: 50%; top: 8px; transform: translateX(-50%);
-  max-width: calc(100% - 16px); padding: 4px 12px; border-radius: 999px;
-  background: #000a; color: #fff; font-size: 13px; pointer-events: none; text-align: center;
+  /* 放在左下角：顶部会挡住房子，底部居中会挡住角色 */
+  position: absolute; left: 8px; bottom: 8px;
+  max-width: calc(100% - 16px); padding: 3px 10px; border-radius: 999px;
+  background: #000a; color: #fff; font-size: 13px; pointer-events: none; text-align: left;
 }
 
 .dialogue {
