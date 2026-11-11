@@ -9,6 +9,7 @@
 
 ```bash
 npm install
+npm run sync:assets # 从本地素材库同步美术（首次需先配置路径，见下文）
 npm run dev        # 本地开发：打开终端里显示的网址
 npm run build      # 校验配置 + 类型检查 + 构建到 dist/
 npm run preview    # 预览构建结果
@@ -16,6 +17,9 @@ npm test           # 单元测试（寻路、内容索引、配置校验、存�
 npm run test:e2e   # 浏览器端到端测试（需先 build，需要本机 Chromium/Chrome）
 npm run validate   # 只校验 world/ 与 content/
 ```
+
+> 美术素材不随仓库分发（授权禁止向非正版用户再分发素材本体）。
+> 新克隆的仓库必须先跑 `npm run sync:assets`，否则 `build` 会在校验阶段停下来并提示怎么做。
 
 ## 操作方式
 
@@ -38,11 +42,11 @@ world/            世界配置（数据驱动）
 content/
   articles/         文章（Markdown + frontmatter）
   pages/            独立页面（如「关于」）
-public/assets/    占位美术（程序生成，可整体替换）
+public/assets/    第三方美术（本地同步，不入库；见 sync:assets）
 src/game/         游戏核心：场景、移动、寻路、交互行为、存档
 src/web/          HTML 界面：对话框、内容窗口
 src/data/         Schema、配置解析与校验、内容构建
-scripts/          校验脚本、占位美术与地图生成脚本
+scripts/          校验脚本、素材同步、地图生成脚本
 tests/            单元测试与浏览器测试
 docs/             架构与维护文档
 ```
@@ -52,16 +56,29 @@ docs/             架构与维护文档
 ## 部署
 
 构建产物是纯静态文件，可部署到任意静态托管。仓库带有 GitHub Pages 工作流
-（`.github/workflows/deploy-pages.yml`），**只在手动触发时运行**。
+（`.github/workflows/deploy-pages.yml`），push 到 `main` 或手动触发都会运行。
+
+**当前状态：CI 与 Pages 部署都还跑不通。** 原因是素材不入库，
+`npm run build` 的第一步 `validate` 会因缺图失败。要让它通过，需要先决定素材托管方式
+（仓库转私有，或在 CI 里注入素材），详见 `public/assets/来源与授权.md`。
 
 ## 美术与版权
 
-当前美术为 RPG Maker 系列素材（48×48 图块 + 48×48 行走图），**仅在本机/私人使用**：
-这些素材的授权只覆盖 RPG Maker 引擎与非商业私人用途，不允许公开再分发。
-因此 `public/assets/tilesets/*.png` 与 `public/assets/sprites/*.png` 已被 `.gitignore` 排除，
-**不会进入仓库**。仓库只保存代码、地图与配置。
+当前美术是 **RPG Maker MZ 官方素材**（48×48 图块 + 48×48 行走图），另有 1 张第三方木屋顶（Avery）。
 
-换一台机器要看到画面，需要把素材手动放回这两个目录，文件名见 `world/assets.json`。
-详见 `public/assets/来源与授权.md`。
+官方的 GGG Products Material Terms（2026-06-22 版）Article 1 允许正版购买者把素材
+用于「RPG Maker 之外的程序与其他公司游戏工具创作的作品」，**跨引擎使用是允许的**；
+但同时禁止向**非正版用户分发素材本体**。
 
-原始素材库在 `D:\美术素材库\`（不在本仓库内）。
+所以 `public/assets/tilesets/*.png` 与 `public/assets/sprites/*.png` 被 `.gitignore` 排除：
+公开仓库等于给所有人提供原文件下载。换机器时按下面方式恢复：
+
+```bash
+cp asset-library.example.json asset-library.local.json   # 填上素材库路径
+npm run sync:assets
+```
+
+只复制 `assets.manifest.json` 里登记的文件，素材库原文件只读，缺文件会明确报错。
+完整授权分析与逐文件来源见 `public/assets/来源与授权.md`。
+
+正式对外发布前还差一项：条款要求在成品中标注素材来源与版权声明（见该文档第五节）。

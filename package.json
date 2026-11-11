@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "gen:art": "node scripts/generate-placeholder-art.mjs",
     "gen:maps": "node scripts/generate-maps.mjs",
-    "gen:m2maps": "node scripts/build-m2-maps.mjs"
+    "gen:m2maps": "node scripts/build-m2-maps.mjs",
+    "sync:assets": "node scripts/sync-assets.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

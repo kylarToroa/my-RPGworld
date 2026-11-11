@@ -1,0 +1,5 @@
+{
+  "$comment": "复制本文件为 asset-library.local.json 并填上本机路径。该文件已被 .gitignore 忽略，不会提交。",
+  "rtp": "请填写 RPG Maker 官方素材的 img 目录，例如 <RPG Maker MZ 安装目录>/img",
+  "library": "请填写你自己的美术素材库根目录"
+}

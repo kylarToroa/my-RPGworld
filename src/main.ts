@@ -24,6 +24,9 @@ async function boot(): Promise<void> {
   const content = new ContentClient('./');
   const ui = new GameUI(stage, content);
   const saves = new SaveStore(safeStorage());
+  const loaded = saves.load();
+  const migration = saves.lastMigration;
+  const { scene: startScene, requested } = resolveSaveScene(loaded, world);
   const keys = new KeyboardState();
   const touch = window.matchMedia('(pointer: coarse)').matches;
   let scene: WorldSceneType | undefined;
@@ -47,8 +50,6 @@ async function boot(): Promise<void> {
   });
   window.addEventListener('keyup', (e) => keys.keyUp(e));
   window.addEventListener('blur', () => keys.reset());
-
-  const { scene: startScene, requested } = resolveSaveScene(saves.load(), world);
 
   // Phaser 体积较大，单独分包按需加载，让页面先显示出来
   const [{ default: Phaser }, { WorldScene }] = await Promise.all([import('phaser'), import('./game/WorldScene')]);
@@ -76,6 +77,16 @@ async function boot(): Promise<void> {
   const focusGame = () => gameEl.focus({ preventScroll: true });
   focusGame();
   gameEl.addEventListener('pointerdown', focusGame);
+
+  // 旧存档迁移提示：迁移成功后已写回新版本，所以只会出现这一次
+  if (migration) {
+    const kept = world.scenes.get(migration.scene);
+    ui.notify(
+      kept
+        ? `存档已升级到新版地图，位置已重置到「${kept.name}」的入口`
+        : `存档已升级到新版地图，原来的场景已不存在，已回到「${startScene.name}」`,
+    );
+  }
 
   document.getElementById('btn-home')!.addEventListener('click', () => {
     focusGame();

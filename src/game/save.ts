@@ -35,21 +35,53 @@ export function memoryStorage(): KeyValueStorage {
   };
 }
 
-/** 旧版本存档迁移：key 为旧版本号，返回升级一版后的数据。暂时没有旧版本。 */
-const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record<string, unknown>> = {};
+/**
+ * 迁移哨兵坐标：表示"这个位置来自旧网格，无法换算"。
+ * 它不是合法格子，resolvePlacement 会自然地回落到场景出生点。
+ */
+const UNKNOWN_POSITION = -1;
+
+/**
+ * 旧版本存档迁移：key 为旧版本号，返回升级一版后的数据。
+ *
+ * v1 → v2：网格从 16px 改为 48px，地图是重画的，旧坐标与新坐标没有稳定的对应关系，
+ * 所以不按比例缩放（×3 会把人放到错误的地方），而是保留场景 ID 与朝向，位置交给出生点。
+ * 场景本身若已被删除，由 resolveSaveScene 兜底回到起始场景。
+ */
+const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record<string, unknown>> = {
+  1: (old) => ({ ...old, x: UNKNOWN_POSITION, y: UNKNOWN_POSITION }),
+};
+
+/** 存档迁移的记录，用于在加载完成后给访客一条提示 */
+export interface MigrationInfo {
+  /** 迁移前的版本号 */
+  from: number;
+  /** 迁移前记录的场景 ID（可能已被删除） */
+  scene: string;
+}
 
 export class SaveStore {
+  private migration: MigrationInfo | null = null;
+
   constructor(
     private readonly storage: KeyValueStorage,
     private readonly key = SAVE_KEY,
   ) {}
 
+  /** 上一次 load() 是否发生了版本迁移（没有则为 null） */
+  get lastMigration(): MigrationInfo | null {
+    return this.migration;
+  }
+
   load(): SaveData | null {
+    this.migration = null;
     try {
       const raw = this.storage.getItem(this.key);
       if (!raw) return null;
       let data = JSON.parse(raw) as Record<string, unknown>;
-      let version = typeof data.version === 'number' ? data.version : 0;
+      const from = typeof data.version === 'number' ? data.version : 0;
+      const originalScene = typeof data.scene === 'string' ? data.scene : '';
+      let version = from;
       while (version < SAVE_VERSION) {
         const migrate = MIGRATIONS[version];
         if (!migrate) return null; // 无法迁移的旧存档：放弃，回到起点
@@ -58,18 +90,21 @@ export class SaveStore {
         data.version = version;
       }
       const parsed = SaveSchema.safeParse(data);
-      return parsed.success && parsed.data.version === SAVE_VERSION ? parsed.data : null;
+      if (!parsed.success || parsed.data.version !== SAVE_VERSION) return null;
+
+      // 迁移成功：立刻写回新版本，保证提示只出现一次，也避免每次加载都重算
+      if (from < SAVE_VERSION) {
+        this.migration = { from, scene: originalScene };
+        this.persist(parsed.data);
+      }
+      return parsed.data;
     } catch {
       return null;
     }
   }
 
   save(data: Omit<SaveData, 'version'>): void {
-    try {
-      this.storage.setItem(this.key, JSON.stringify({ ...data, version: SAVE_VERSION }));
-    } catch {
-      // 存储满或被禁用：忽略，不影响游玩
-    }
+    this.persist({ ...data, version: SAVE_VERSION });
   }
 
   clear(): void {
@@ -77,6 +112,14 @@ export class SaveStore {
       this.storage.removeItem(this.key);
     } catch {
       // 同上
+    }
+  }
+
+  private persist(data: SaveData): void {
+    try {
+      this.storage.setItem(this.key, JSON.stringify(data));
+    } catch {
+      // 存储满或被禁用：忽略，不影响游玩
     }
   }
 }

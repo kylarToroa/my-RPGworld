@@ -1,4 +1,5 @@
-# 部署到 GitHub Pages。只在手动点击 “Run workflow” 时运行，不会自动部署。
+# 部署到 GitHub Pages：push 到 main 或手动点 “Run workflow” 都会触发。
+# 注意：美术素材不入库，本工作流需要先注入素材（见 public/assets/来源与授权.md）才能在 build 阶段通过。
 name: Deploy to GitHub Pages
 on:
   workflow_dispatch:

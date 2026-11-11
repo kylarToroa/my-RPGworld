@@ -1,0 +1,42 @@
+{
+  "$comment": "资源同步白名单。sync-assets.mjs 只按本表复制/裁剪，绝不整目录搬运。路径前缀 rtp: / library: 由环境变量或命令行参数提供，不写死个人电脑路径。",
+  "roots": {
+    "rtp": {
+      "env": "RPG_ASSET_RTP",
+      "desc": "RPG Maker 官方素材根目录，即示例工程/安装目录下的 img 目录（其下应有 tilesets/ 与 characters/）"
+    },
+    "library": {
+      "env": "RPG_ASSET_LIBRARY",
+      "desc": "站长自建的美术素材库根目录（第三方素材）"
+    }
+  },
+  "files": [
+    { "out": "tilesets/outside_a4.png", "from": "rtp:tilesets/Outside_A4.png", "mode": "copy", "note": "室外墙体（A4）" },
+    { "out": "tilesets/outside_a5.png", "from": "rtp:tilesets/Outside_A5.png", "mode": "copy", "note": "室外地面（A5）" },
+    { "out": "tilesets/outside_b.png", "from": "rtp:tilesets/Outside_B.png", "mode": "copy", "note": "室外物件、树木" },
+    { "out": "tilesets/inside_a4.png", "from": "rtp:tilesets/Inside_A4.png", "mode": "copy", "note": "室内墙体（A4）" },
+    { "out": "tilesets/inside_a5.png", "from": "rtp:tilesets/Inside_A5.png", "mode": "copy", "note": "室内地面（A5）" },
+    { "out": "tilesets/inside_b.png", "from": "rtp:tilesets/Inside_B.png", "mode": "copy", "note": "室内物件、家具" },
+    { "out": "tilesets/inside_c.png", "from": "rtp:tilesets/Inside_C.png", "mode": "copy", "note": "预留（当前地图未引用，assets.json 已登记）" },
+    {
+      "out": "tilesets/roof_wood_a3.png",
+      "from": "library:07_Avery_论坛附件/forestmzaverya3.png",
+      "mode": "copy",
+      "note": "第三方（Avery）木屋顶。授权要求署名且禁止再分发，属待核实项"
+    },
+    {
+      "out": "tilesets/ground_grass.png",
+      "from": "rtp:tilesets/Outside_A5.png",
+      "mode": "tile-variants",
+      "tile": [4, 2],
+      "tileSize": 48,
+      "variants": [[0, 0], [16, 0], [0, 16], [32, 16], [16, 32], [40, 8], [8, 40], [24, 24], [40, 40], [8, 8]],
+      "flipOdd": true,
+      "note": "草地 10 变体，用于打破平铺重复感（由 A5 草地格派生）"
+    },
+    { "out": "sprites/player.png", "from": "rtp:characters/Actor1.png", "mode": "crop", "rect": [0, 0, 144, 192], "note": "主角：Actor1 第 0 号角色（4 向×3 帧）" },
+    { "out": "sprites/villager.png", "from": "rtp:characters/People1.png", "mode": "crop", "rect": [0, 192, 144, 192], "note": "村民：People1 第 4 号" },
+    { "out": "sprites/librarian.png", "from": "rtp:characters/People1.png", "mode": "crop", "rect": [144, 0, 144, 192], "note": "图书管理员：People1 第 1 号" },
+    { "out": "sprites/big_tree.png", "from": "rtp:tilesets/Outside_B.png", "mode": "crop", "rect": [384, 288, 96, 96], "note": "老树：Outside_B 的 2×2 树块，作为精灵实体用于树冠遮挡" }
+  ]
+}
