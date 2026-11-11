@@ -157,7 +157,7 @@ const MAPS = {
       'TTTTTTTTTTTTTTTTTTTTTTTTTTTT',
       'TT........................TT',
       'TT....RRRRRRRR............TT',
-      'TT....EEEEEEEE............TT',
+      'TT....RRRRRRRR............TT',
       'TT....WwWWDWwW............TT',
       'TT........=...............TT',
       'TT..c.....=...............TT',

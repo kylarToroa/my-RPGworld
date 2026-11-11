@@ -4,7 +4,7 @@
   "map": "town",
   "defaultSpawn": "start",
   "spawns": {
-    "start": { "x": 10, "y": 16, "facing": "up" },
+    "start": { "x": 10, "y": 8, "facing": "up" },
     "library_door": { "x": 10, "y": 6, "facing": "down" }
   }
 }
