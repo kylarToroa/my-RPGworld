@@ -19,10 +19,10 @@
     { "out": "tilesets/inside_b.png", "from": "rtp:tilesets/Inside_B.png", "mode": "copy", "note": "室内物件、家具" },
     { "out": "tilesets/inside_c.png", "from": "rtp:tilesets/Inside_C.png", "mode": "copy", "note": "预留（当前地图未引用，assets.json 已登记）" },
     {
-      "out": "tilesets/roof_wood_a3.png",
-      "from": "library:07_Avery_论坛附件/forestmzaverya3.png",
+      "out": "tilesets/outside_a3.png",
+      "from": "rtp:tilesets/Outside_A3.png",
       "mode": "copy",
-      "note": "第三方（Avery）木屋顶。授权要求署名且禁止再分发，属待核实项"
+      "note": "室外屋顶（A3，16×8 格自动图块表）。木瓦屋顶：列 8 行 0 = 上沿，列 8 行 1 = 瓦面"
     },
     {
       "out": "tilesets/ground_grass.png",

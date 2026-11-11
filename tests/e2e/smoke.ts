@@ -405,6 +405,20 @@ async function desktop(browser: Browser) {
     await waitState(page, (s) => !s.locked, '解除锁定');
   });
 
+  await test('制作说明书架：可打开署名文章', async () => {
+    await clickTile(page, 9, 2);
+    await waitState(page, (s) => s.x === 9 && s.y === 2 && !s.moving, '走到制作说明书架前');
+    await page.keyboard.press('ArrowUp'); // 面向书架（被挡住，只转身）
+    await page.waitForTimeout(250);
+    await page.keyboard.press('e');
+    await page.waitForSelector('.modal .item-button', { timeout: 5000 });
+    assert((await page.textContent('#modal-title')) === '制作说明', '标题不对');
+    const items = await page.$$eval('.modal .item-button', (els) => els.map((e) => e.textContent));
+    assert(items.some((t) => t?.includes('这个网站用了什么')), `书架里没有制作说明：${JSON.stringify(items)}`);
+    await page.click('.modal-close');
+    await waitState(page, (s) => !s.locked, '解除锁定');
+  });
+
   await test('点击出口回到小镇门口', async () => {
     await clickTile(page, 6, 8);
     const s = await waitState(page, (s) => s.scene === 'town' && !s.locked, '回到小镇', 15000);
@@ -465,7 +479,7 @@ async function staticPages(browser: Browser) {
     await page.click('.prose a >> text=内容库');
     await page.waitForURL(`${BASE}library/`);
     const links = await page.$$eval('.item-list a', (els) => els.map((e) => (e as HTMLAnchorElement).href));
-    assert(links.length === 3, `内容库应有 3 项，实际 ${links.length}`);
+    assert(links.length === 4, `内容库应有 4 项（3 篇文章 + 制作说明），实际 ${links.length}`);
   });
 
   await test('浏览器前进后退', async () => {

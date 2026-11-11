@@ -7,7 +7,7 @@
     "inside_a5": "assets/tilesets/inside_a5.png",
     "inside_b": "assets/tilesets/inside_b.png",
     "inside_c": "assets/tilesets/inside_c.png",
-    "roof_wood_a3": "assets/tilesets/roof_wood_a3.png",
+    "outside_a3": "assets/tilesets/outside_a3.png",
     "ground_grass": "assets/tilesets/ground_grass.png"
   },
   "sprites": {
